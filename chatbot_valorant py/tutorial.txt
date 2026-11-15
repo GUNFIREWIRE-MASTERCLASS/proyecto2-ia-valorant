@@ -61,8 +61,7 @@ PASO 6: CREAR SU PROPIA API KEY DE GROQ (gratis)
 - Entrar a console.groq.com/keys e iniciar sesión con Google.
 - Clic en "Create API Key", ponerle un nombre y copiar la clave.
 - La clave empieza con: gsk_...
-- Cada integrante debe crear la suya. NO compartir claves por
-  chat ni subirlas a GitHub.
+- Ingresar la clave en app.py en la linea 17 entre las comillas vacías.
 
 
 PASO 7: CONFIGURAR LA CLAVE EN LA TERMINAL
@@ -102,59 +101,3 @@ PASO 9: ABRIR EL CHAT EN EL NAVEGADOR
 PASO 10: APAGAR EL SERVIDOR
 -----------------------------------------------
 - En la terminal presionar Ctrl + C.
-
-
-=====================================================
- SOLUCIÓN DE ERRORES COMUNES
-=====================================================
-
-ERROR: "python no se reconoce como comando"
-  -> Reinstalar Python marcando "Add to PATH" y abrir una
-     terminal nueva. También probar con:  py app.py
-
-ERROR: "can't open file app.py"
-  -> No están en la carpeta correcta. Usar "dir" y "cd".
-
-ERROR: "ModuleNotFoundError: No module named 'flask'" (o 'groq')
-  -> Falta instalar:  python -m pip install -r requirements.txt
-
-ERROR: "Invalid API Key" o error 401
-  -> La clave está mal copiada o no se configuró en esa terminal.
-     Repetir el PASO 7 pegando con Ctrl + V.
-
-ERROR: "429" / "Limit... reduce max_tokens"
-  -> Límite gratuito de Groq. Esperar 1 minuto y reintentar.
-
-MENSAJE: "Configura tu API_KEY en app.py"
-  -> No se definió la variable de entorno. Repetir el PASO 7 y
-     volver a ejecutar el PASO 8 en la misma terminal.
-
-
-=====================================================
- PARA LA INTERROGACIÓN (CAMBIOS EN VIVO)
-=====================================================
-
-- Todo el conocimiento está en el archivo: conocimiento.py
-- Agregar un agente: añadir una línea en el diccionario AGENTES.
-    Ejemplo: "nuevo": {"rol": "duelista", "costo_kit": 500},
-- Agregar un arma: añadir una línea en el diccionario ARMAS.
-- Cambiar umbral de rondas: editar la función tipo_ronda().
-- Guardar con Ctrl + S. El servidor se recarga solo.
-- Si piden el cambio también en Prolog, editar el archivo .pl
-  con el mismo dato.
-
-
-=====================================================
- SEGURIDAD (MUY IMPORTANTE)
-=====================================================
-
-- NUNCA escribir la API Key dentro de app.py antes de subirlo
-  a GitHub. La línea debe quedar así:
-    API_KEY = os.environ.get("GROQ_API_KEY", "")
-- Crear un archivo .gitignore con estas líneas:
-    __pycache__/
-    *.pyc
-    .env
-    venv/
-- Si una clave se compartió o se subió por error, borrarla en
-  console.groq.com/keys y crear una nueva.
