@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valorant Economy AI - UNAB</title>
+    <style>
+        :root {
+            --bg-dark: #0f1923;
+            --panel-bg: #1f2731;
+            --val-red: #ff4655;
+            --text-light: #ece8e1;
+            --bot-msg: #2a3543;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-light); display: flex; flex-direction: column; height: 100vh; }
+        header {
+            background-color: var(--panel-bg);
+            border-bottom: 2px solid var(--val-red);
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 { font-size: 1.25rem; letter-spacing: 1px; color: var(--val-red); text-transform: uppercase; }
+        header span { font-size: 0.85rem; opacity: 0.8; }
+        .chat-container {
+            flex: 1;
+            max-width: 850px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .msg {
+            max-width: 78%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+        }
+        .msg.bot { background-color: var(--bot-msg); align-self: flex-start; border-left: 4px solid var(--val-red); }
+        .msg.user { background-color: var(--val-red); color: #fff; align-self: flex-end; }
+        .quick-prompts {
+            max-width: 850px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 6px 20px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .chip {
+            background: var(--panel-bg);
+            border: 1px solid #3c4856;
+            color: var(--text-light);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .chip:hover { border-color: var(--val-red); color: var(--val-red); }
+        .input-bar {
+            background-color: var(--panel-bg);
+            padding: 14px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .input-wrapper {
+            max-width: 850px;
+            width: 100%;
+            display: flex;
+            gap: 10px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 6px;
+            border: 1px solid #3c4856;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        input[type="text"]:focus { outline: none; border-color: var(--val-red); }
+        button {
+            background-color: var(--val-red);
+            color: white;
+            border: none;
+            padding: 0 22px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover { background-color: #e03543; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🎯 Valorant Economy Advisor (LLM + Knowledge Base)</h1>
+    <span>UNAB • Fundamentos de IA • Proyecto N°2</span>
+</header>
+
+<div class="chat-container" id="chatBox">
+    <div class="msg bot">¡Hola! Soy el asistente táctico de economía de VALORANT potenciado por IA y una base de conocimiento formal. Pregúntame por planes de compra según tus créditos, costos de habilidades, roles de agentes o estadísticas de armas.</div>
+</div>
+
+<div class="quick-prompts">
+    <span class="chip" onclick="usarEjemplo('Tengo 3900 créditos jugando con Sage a larga distancia, ¿qué me compro?')">Plan 3900 cr. con Sage (Larga)</span>
+    <span class="chip" onclick="usarEjemplo('¿Cuál es el rol de Jett y qué otros agentes comparten su mismo rol?')">Rol de Jett y similares</span>
+    <span class="chip" onclick="usarEjemplo('¿Qué tipo de arma es la Vandal, cuánto cuesta y cuál es su alcance óptimo?')">Info de la Vandal</span>
+    <span class="chip" onclick="usarEjemplo('Si tengo 2500 créditos con Omen para pelear a corta distancia, ¿cuál es mi plan de compra?')">Semi-buy 2500 cr. con Omen</span>
+</div>
+
+<div class="input-bar">
+    <div class="input-wrapper">
+        <input type="text" id="userInput" placeholder="Escribe tu pregunta sobre agentes, armas o créditos..." autocomplete="off" onkeydown="if(event.key==='Enter') enviarMensaje()">
+        <button onclick="enviarMensaje()">ENVIAR</button>
+    </div>
+</div>
+
+<script>
+    const chatBox = document.getElementById('chatBox');
+    const userInput = document.getElementById('userInput');
+
+    function agregarMensaje(texto, tipo) {
+        const div = document.createElement('div');
+        div.className = `msg ${tipo}`;
+        div.textContent = texto;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        return div;
+    }
+
+    function usarEjemplo(texto) {
+        userInput.value = texto;
+        enviarMensaje();
+    }
+
+    async function enviarMensaje() {
+        const texto = userInput.value.trim();
+        if (!texto) return;
+
+        agregarMensaje(texto, 'user');
+        userInput.value = '';
+        const loadingMsg = agregarMensaje('Analizando base de conocimiento...', 'bot');
+
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mensaje: texto })
+            });
+            const data = await res.json();
+            loadingMsg.textContent = data.respuesta;
+        } catch (err) {
+            loadingMsg.textContent = 'Error de conexión con el servidor Flask.';
+        }
+    }
+</script>
+
+</body>
+</html>
