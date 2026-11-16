@@ -1,2 +1,111 @@
 # proyecto2-ia-valorant.
-Proyecto 2 Fundamentos de IA - UNAB.
+Proyecto 2 Fundamentos de IA - NRC 8332 - UNAB
+Chatbot Valorant - LLM + Python
+
+Integrantes
+-Francisco Fernández Ramírez  RUT:21.749.438-9
+-Alberto Valencia Contreras (RUT: 21.134.642-6)
+-Benjamín Medel Orellana (RUT: 21.880.075-0)
+
+***********************************
+Instrucciones de Uso.
+***********************************
+
+PASO 1: INSTALAR PYTHON (solo si no lo tienen)
+-----------------------------------------------
+- Entren a python.org/downloads y descarguen Python 3.12.
+- Al instalar, MARQUEN la casilla "Add python.exe to PATH".
+- Alternativa en Windows (en la terminal):
+    winget install -e --id Python.Python.3.12
+- Al terminar, CIERREN y vuelvan a abrir VS Code / la terminal.
+- Para comprobar que quedó bien, escriban:
+    python --version
+
+
+PASO 2: DESCARGAR EL PROYECTO
+-----------------------------------------------
+Opción A (con Git):
+    git clone https://github.com/GUNFIREWIRE-MASTERCLASS/proyecto2-ia-valorant.
+    cd proyecto2-ia-valorant
+
+Opción B (sin Git):
+- Entrar al repositorio en GitHub.
+- Botón verde "Code" -> "Download ZIP".
+- Descomprimir y abrir la carpeta en VS Code (File -> Open Folder).
+
+La carpeta debe contener:
+    conocimiento.py
+    app.py
+    requirements.txt
+    templates/index.html
+
+
+PASO 3: ABRIR LA TERMINAL EN LA CARPETA DEL PROYECTO
+-----------------------------------------------
+- En VS Code: menú Terminal -> New Terminal (o Ctrl + Ñ).
+- Verifiquen que están dentro de la carpeta correcta con:
+    dir
+  Deben ver app.py y conocimiento.py en la lista.
+- Si no los ven, entren a la carpeta con:
+    cd nombre_de_la_carpeta
+
+
+PASO 4: REVISAR requirements.txt
+-----------------------------------------------
+El archivo debe contener exactamente estas dos líneas:
+    flask>=3.0.0
+    groq>=0.11.0
+(Si dice "google-genai", cámbienlo por "groq>=0.11.0".)
+
+
+PASO 5: INSTALAR LAS LIBRERÍAS
+-----------------------------------------------
+En la terminal escriban:
+    python -m pip install -r requirements.txt
+Esperen a que termine (puede tardar un minuto).
+
+
+PASO 6: CREAR SU PROPIA API KEY DE GROQ (gratis)
+-----------------------------------------------
+- Entrar a console.groq.com/keys e iniciar sesión con Google.
+- Clic en "Create API Key", ponerle un nombre y copiar la clave.
+- La clave empieza con: gsk_...
+
+
+PASO 7: CONFIGURAR LA CLAVE EN LA TERMINAL
+-----------------------------------------------
+Windows (PowerShell):
+    $env:GROQ_API_KEY="gsk_PEGA_AQUI_TU_CLAVE"
+
+Mac / Linux:
+    export GROQ_API_KEY="gsk_PEGA_AQUI_TU_CLAVE"
+
+IMPORTANTE:
+- Pegar la clave con Ctrl + V (no escribirla a mano: se confunden
+  las letras l, I y el número 1).
+- Esto vale solo para esa terminal. Si la cierran, repetir este paso.
+
+
+PASO 8: ENCENDER EL SERVIDOR
+-----------------------------------------------
+En la MISMA terminal escriban:
+    python app.py
+
+Debe aparecer algo así:
+    * Running on http://127.0.0.1:5000
+
+NO cierren la terminal mientras usan el chat.
+
+
+PASO 9: ABRIR EL CHAT EN EL NAVEGADOR
+-----------------------------------------------
+- Abrir Chrome o Edge y entrar a:
+    http://127.0.0.1:5000
+- Probar con un botón de ejemplo o escribir, por ejemplo:
+    "Tengo 3900 créditos jugando con Sage a larga distancia,
+     ¿qué me compro?"
+
+
+PASO 10: APAGAR EL SERVIDOR
+-----------------------------------------------
+- En la terminal presionar Ctrl + C.
