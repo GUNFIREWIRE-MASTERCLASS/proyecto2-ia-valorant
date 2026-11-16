@@ -25,7 +25,7 @@ PASO 1: INSTALAR PYTHON (solo si no lo tienen)
 PASO 2: DESCARGAR EL PROYECTO
 -----------------------------------------------
 Opción A (con Git):
-    git clone https://github.com/GUNFIREWIRE-MASTERCLASS/proyecto2-ia-valorant.
+    git clone https://github.com/GUNFIREWIRE-MASTERCLASS/proyecto2-ia-valorant
     cd proyecto2-ia-valorant
 
 Opción B (sin Git):
